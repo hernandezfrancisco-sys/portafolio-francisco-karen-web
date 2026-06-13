@@ -7,79 +7,98 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        body { margin: 0; font-family: 'Inter', sans-serif; background-color: #ffffff; }
+        body { margin: 0; font-family: 'Inter', sans-serif; }
     </style>
 </head>
 <body>
 
     <script>
-        // 1. INYECCIÓN DE ESTILOS CON EFECTOS DE BORDE MUSICAL
+        // 1. INYECCIÓN DE ESTILOS CON FONDO ARTÍSTICO PARA CODE REVIEW
         function injectStyles() {
             const css = `
                 :root {
-                    --white: #ffffff;
-                    --text-dark: #1e293b;
-                    --text-gray: #64748b;
-                    --accent: #db2777;
-                    --neon-blue: #00f2ff;
-                    --neon-purple: #bd00ff;
-                    --gray-light: #f1f5f9;
+                    --lila-bg: #cbb6d6; 
+                    --text-main: #4a3b52;
+                    --white-glass: rgba(255, 255, 255, 0.6);
                 }
                 
                 * { margin: 0; padding: 0; box-sizing: border-box; }
                 
                 body {
-                    background-color: var(--white);
-                    color: var(--text-dark);
+                    background-color: var(--lila-bg);
+                    color: var(--text-main);
                     min-height: 100vh;
                     overflow-x: hidden;
-                    overflow-y: auto;
+                    position: relative;
+                    transition: background 0.5s ease;
                 }
 
-                /* --- SISTEMA DE VISTAS --- */
-                .view-container {
-                    width: 100%;
-                    min-height: 100vh;
+                /* --- FONDO ARTÍSTICO ESTILO IMAGEN (SOLO PARA CODE REVIEW) --- */
+                .artistic-bg {
+                    position: fixed;
+                    top: 0; left: 0; width: 100%; height: 100%;
+                    z-index: 0;
+                    pointer-events: none;
+                    opacity: 0; /* Oculto inicialmente */
+                    transition: opacity 1s ease;
+                    
+                    /* Recreación del patrón abstracto con degradados complejos */
+                    background: 
+                        radial-gradient(circle at 10% 20%, rgba(255, 180, 180, 0.8) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 10%, rgba(255, 220, 180, 0.8) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(200, 180, 255, 0.8) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 90%, rgba(255, 150, 200, 0.8) 0%, transparent 40%),
+                        linear-gradient(135deg, #fcd5ce 0%, #f8ad9d 25%, #fec89a 50%, #ffb5a7 75%, #e2d1f9 100%);
+                    
+                    /* Filtro para suavizar y crear el efecto de formas difusas */
+                    filter: blur(30px) contrast(1.1);
+                    transform: scale(1.1); /* Evita bordes blancos por el blur */
+                }
+
+                /* Capa de ruido sutil para textura */
+                .noise-overlay {
+                    position: fixed;
+                    top: 0; left: 0; width: 100%; height: 100%;
+                    z-index: 1;
+                    pointer-events: none;
+                    opacity: 0.03;
+                    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+                }
+
+                /* --- CONTENEDOR PRINCIPAL --- */
+                .main-wrapper {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 2rem;
+                    position: relative;
+                    z-index: 2;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4rem;
+                }
+
+                /* --- SECCIÓN 1: INTRODUCCIÓN (ESTILO LILA LIMPIO) --- */
+                .intro-section {
+                    text-align: center;
+                    min-height: 90vh;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    transition: all 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-                    opacity: 0;
-                    pointer-events: none;
-                    position: absolute;
-                    top: 0; left: 0;
-                    transform: translateX(50px);
-                    padding: 2rem;
+                    padding: 0 1rem;
                 }
 
-                .view-container.active {
-                    opacity: 1;
-                    pointer-events: auto;
-                    transform: translateX(0);
-                    position: relative;
-                    z-index: 10;
-                }
-
-                .view-container.exit {
-                    opacity: 0;
-                    transform: translateX(-50px);
-                    position: absolute;
-                    z-index: 1;
-                }
-
-                /* --- ESTILOS PANTALLA 1: NOMBRES --- */
                 h1.name-title {
                     font-family: 'Playfair Display', serif;
-                    font-size: clamp(2.5rem, 6vw, 4.5rem);
+                    font-size: clamp(2rem, 5vw, 5rem); 
                     font-weight: 700;
                     margin: 0.5rem 0;
-                    line-height: 1.1;
-                    cursor: pointer;
-                    transition: color 0.3s ease;
-                    text-align: center;
+                    line-height: 1.2;
+                    color: #fff;
+                    text-shadow: 0 4px 15px rgba(74, 59, 82, 0.15);
+                    white-space: nowrap; 
+                    width: 100%;
                 }
-                h1.name-title:hover { color: var(--accent); }
 
                 .letter {
                     display: inline-block;
@@ -89,119 +108,96 @@
                 @keyframes floatWave { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
 
                 .portfolio-subtitle {
-                    font-size: 0.9rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3rem;
-                    opacity: 0; animation: fadeUp 1s ease-out 2s forwards;
-                    text-align: center;
+                    font-size: 1rem; color: #5e4b66; text-transform: uppercase; letter-spacing: 0.2em; margin-top: 3rem;
+                    font-weight: 600;
                 }
-                @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-                .enter-hint {
+                .scroll-indicator {
                     margin-top: 4rem;
-                    font-size: 0.85rem;
-                    color: var(--text-gray);
-                    opacity: 0;
-                    animation: pulseHint 2s infinite 3s;
+                    font-size: 0.9rem;
+                    color: #5e4b66;
+                    animation: bounceDown 2s infinite;
                     cursor: pointer;
-                    border: 1px solid var(--gray-light);
-                    padding: 0.8rem 2rem;
-                    border-radius: 50px;
-                    transition: all 0.3s;
+                    opacity: 0.7;
+                    background: rgba(255,255,255,0.3);
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 20px;
                 }
-                .enter-hint:hover { border-color: var(--accent); color: var(--accent); background: #fff0f5; }
-                @keyframes pulseHint { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+                @keyframes bounceDown {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(10px); }
+                }
 
-                /* --- ESTILOS PANTALLA 2: ANÁLISIS MUSICAL --- */
-                .analysis-wrapper {
-                    max-width: 900px;
-                    width: 100%;
-                    text-align: left;
+                /* --- SECCIÓN 2: ANÁLISIS MUSICAL (GLASSMORPHISM SOBRE ARTE) --- */
+                .analysis-section {
                     padding-bottom: 4rem;
-                    padding-top: 2rem;
-                    position: relative;
-                    z-index: 2;
+                    max-width: 900px;
+                    margin: 0 auto;
+                    width: 100%;
                 }
 
                 .analysis-header { text-align: center; margin-bottom: 2rem; }
-                .analysis-header h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 0.5rem; }
+                .analysis-header h2 { 
+                    font-family: 'Playfair Display', serif; 
+                    font-size: 2.5rem; 
+                    margin-bottom: 0.5rem; 
+                    color: #4a3b52;
+                }
+                
                 .song-tag {
-                    display: inline-block; background: var(--gray-light); padding: 0.4rem 1.2rem;
-                    border-radius: 50px; font-size: 0.9rem; color: var(--accent); font-weight: 600;
+                    display: inline-block; 
+                    background: rgba(255,255,255,0.8); 
+                    padding: 0.5rem 1.5rem;
+                    border-radius: 50px; 
+                    font-size: 0.9rem; 
+                    color: #5e4b66; 
+                    font-weight: 700;
+                    border: 1px solid rgba(255,255,255,0.9);
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                }
+
+                /* Tarjetas con efecto vidrio más fuerte para contrastar con el fondo colorido */
+                .glass-panel {
+                    background: rgba(255, 255, 255, 0.45); 
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255, 255, 255, 0.6); 
+                    border-radius: 20px;
+                    padding: 1.5rem;
+                    box-shadow: 0 8px 32px 0 rgba(74, 59, 82, 0.08);
                 }
 
                 .intro-text {
-                    font-size: 1.1rem; line-height: 1.8; color: var(--text-gray);
+                    font-size: 1.1rem; line-height: 1.8; color: #4a3b52;
                     margin-bottom: 2.5rem; text-align: justify;
                 }
 
-                /* --- NUEVO: BORDES LATERALES TIPO ECUALIZADOR --- */
-                .equalizer-border {
-                    position: fixed;
-                    top: 0; bottom: 0;
-                    width: 60px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    padding: 10px 0;
-                    z-index: 1;
-                    pointer-events: none;
+                .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+                
+                .info-card {
+                    transition: all 0.3s ease;
                 }
-                .eq-left { left: 0; border-right: 1px solid rgba(0,0,0,0.05); background: linear-gradient(to right, transparent, rgba(255,255,255,0.8)); }
-                .eq-right { right: 0; border-left: 1px solid rgba(0,0,0,0.05); background: linear-gradient(to left, transparent, rgba(255,255,255,0.8)); }
 
-                .eq-bar {
-                    width: 4px;
-                    margin: 0 auto;
-                    border-radius: 2px;
-                    animation: eqBounce 1s ease-in-out infinite alternate;
+                .info-card:hover { 
+                    transform: translateY(-5px); 
+                    background: rgba(255, 255, 255, 0.65);
                 }
                 
-                /* Colores y tiempos variados para simular música real */
-                .eq-bar:nth-child(odd) { background-color: var(--accent); height: 20px; }
-                .eq-bar:nth-child(even) { background-color: var(--neon-blue); height: 30px; }
-                .eq-bar:nth-child(3n) { background-color: var(--neon-purple); height: 15px; }
-
-                .eq-left .eq-bar { animation-delay: calc(var(--i) * -0.1s); }
-                .eq-right .eq-bar { animation-delay: calc(var(--i) * -0.15s); }
-
-                @keyframes eqBounce {
-                    0% { height: 10px; opacity: 0.5; transform: scaleY(0.8); }
-                    100% { height: 60px; opacity: 1; transform: scaleY(1.2); }
-                }
-
-                /* Ocultar ecualizador en móviles para no tapar contenido */
-                @media (max-width: 768px) {
-                    .equalizer-border { display: none; }
-                    .analysis-wrapper { padding: 2rem 1rem; }
-                }
-
-                /* TARJETAS Y CONTENIDO */
-                .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-                .info-card {
-                    background: var(--white); border: 1px solid var(--gray-light); border-radius: 16px;
-                    padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: all 0.3s ease;
-                }
-                .info-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 8px 25px rgba(219, 39, 119, 0.1); }
-                .card-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
-                .info-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-dark); }
-                .info-card p { font-size: 1rem; line-height: 1.7; color: var(--text-gray); }
+                .card-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+                .info-card h3 { font-size: 1.4rem; margin-bottom: 1rem; color: #5e4b66; font-weight: 700; }
+                .info-card p { font-size: 1rem; line-height: 1.7; color: #4a3b52; }
 
                 .highlight-box {
-                    background: linear-gradient(135deg, #fff0f5, #ffffff); border-left: 4px solid var(--accent);
-                    padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; margin-top: 2rem;
+                    border-left: 4px solid #8e7c99;
+                    margin-top: 2rem;
                 }
-                .highlight-box h3 { color: var(--accent); margin-bottom: 0.5rem; font-size: 1.2rem; }
-                .highlight-box p { font-size: 1.05rem; line-height: 1.7; color: var(--text-dark); }
-
-                .back-btn {
-                    margin-top: 3rem; background: transparent; border: 1px solid var(--gray-light);
-                    padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-size: 0.9rem;
-                    color: var(--text-gray); transition: all 0.3s; display: block; margin: 3rem auto 0;
-                }
-                .back-btn:hover { border-color: var(--text-dark); color: var(--text-dark); background: var(--gray-light); }
+                
+                .highlight-box h3 { color: #5e4b66; margin-bottom: 0.5rem; font-size: 1.2rem; }
+                .highlight-box p { font-size: 1.05rem; line-height: 1.7; color: #4a3b52; }
 
                 footer { 
-                    text-align: center; padding: 2rem; color: #94a3b8; font-size: 0.8rem; 
-                    border-top: 1px solid var(--gray-light); margin-top: auto; width: 100%;
+                    text-align: center; padding: 2rem; color: #5e4b66; font-size: 0.8rem; 
+                    position: relative; z-index: 2;
                 }
             `;
             const style = document.createElement('style');
@@ -218,122 +214,113 @@
                 const span = document.createElement('span');
                 span.className = 'letter';
                 span.innerText = char === ' ' ? '\u00A0' : char;
-                const delay = startDelay + (index * 0.06);
+                const delay = startDelay + (index * 0.05);
                 span.style.animationDelay = `${delay}s, ${delay + 0.8}s`; 
                 element.appendChild(span);
             });
         }
 
-        // 3. LÓGICA DE NAVEGACIÓN
-        function navigateToAnalysis() {
-            const view1 = document.getElementById('view-intro');
-            const view2 = document.getElementById('view-analysis');
+        // 3. LÓGICA DE SCROLL PARA CAMBIAR FONDO
+        function handleScroll() {
+            const analysisSection = document.getElementById('analysis');
+            const artisticBg = document.getElementById('artistic-bg');
             
-            if(view1 && view2) {
-                view1.classList.remove('active');
-                view1.classList.add('exit');
+            if (analysisSection && artisticBg) {
+                const rect = analysisSection.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
                 
-                setTimeout(() => {
-                    view2.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 400);
-            }
-        }
-
-        function navigateToIntro() {
-            const view1 = document.getElementById('view-intro');
-            const view2 = document.getElementById('view-analysis');
-            
-            if(view1 && view2) {
-                view2.classList.remove('active');
-                
-                setTimeout(() => {
-                    view1.classList.remove('exit');
-                    view1.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 400);
+                // Si la sección de análisis entra en la pantalla (con un margen de 200px)
+                if (rect.top < windowHeight - 100) {
+                    artisticBg.style.opacity = '1';
+                } else {
+                    artisticBg.style.opacity = '0';
+                }
             }
         }
 
         // 4. CONSTRUCTOR DE LA INTERFAZ
         function renderApp() {
-            // Vista 1: Introducción
-            const viewIntro = document.createElement('div');
-            viewIntro.id = 'view-intro';
-            viewIntro.className = 'view-container active';
-            viewIntro.innerHTML = `
+            // Fondo artístico (oculto inicialmente)
+            const artisticBg = document.createElement('div');
+            artisticBg.id = 'artistic-bg';
+            artisticBg.className = 'artistic-bg';
+            document.body.appendChild(artisticBg);
+
+            // Capa de ruido
+            const noiseOverlay = document.createElement('div');
+            noiseOverlay.className = 'noise-overlay';
+            document.body.appendChild(noiseOverlay);
+
+            // Contenedor principal
+            const mainWrapper = document.createElement('div');
+            mainWrapper.className = 'main-wrapper';
+
+            // --- PARTE 1: INTRODUCCIÓN ---
+            const introSection = document.createElement('div');
+            introSection.className = 'intro-section';
+            introSection.innerHTML = `
                 <h1 class="name-title" id="name1">Francisco Hernández Orozco</h1>
                 <h1 class="name-title" id="name2">Karen Yulieth Vivas Castro</h1>
                 <p class="portfolio-subtitle">Portafolio (Inserción a la vida universitaria)</p>
-                <div class="enter-hint" onclick="navigateToAnalysis()">Ver Análisis Musical →</div>
-            `;
-
-            // Vista 2: Análisis Musical
-            const viewAnalysis = document.createElement('div');
-            viewAnalysis.id = 'view-analysis';
-            viewAnalysis.className = 'view-container';
-            
-            // Generar barras del ecualizador dinámicamente
-            let barsHTML = '';
-            for(let i=0; i<20; i++) {
-                barsHTML += `<div class="eq-bar" style="--i:${i}"></div>`;
-            }
-
-            viewAnalysis.innerHTML = `
-                <!-- BORDES LATERALES MUSICALES -->
-                <div class="equalizer-border eq-left">${barsHTML}</div>
-                <div class="equalizer-border eq-right">${barsHTML}</div>
-
-                <div class="analysis-wrapper">
-                    <div class="analysis-header">
-                        <h2>Análisis Musical: Emoción vs. Sentimiento</h2>
-                        <span class="song-tag">🎵 Día de Cobro – Myke Towers</span>
-                    </div>
-
-                    <p class="intro-text">
-                        La música es una forma de expresión capaz de influir profundamente en nosotros. En este análisis, se explora la diferencia entre la emoción (reacción inmediata al ritmo) y el sentimiento (comprensión reflexiva de la letra) utilizando el tema <strong>Día de Cobro</strong>, una canción de trap latino enfocada en el esfuerzo y la superación personal.
-                    </p>
-
-                    <!-- SE ELIMINÓ LA IMAGEN DEL ARTISTA PARA EVITAR ERRORES -->
-
-                    <div class="cards-grid">
-                        <div class="info-card">
-                            <span class="card-icon">⚡</span>
-                            <h3>La Emoción (El Ritmo)</h3>
-                            <p>Produce energía, adrenalina y motivación automática. La base intensa y acelerada hace que el cuerpo reaccione de inmediato, incluso antes de escuchar la letra. Es lo que podemos llamar el <strong>"hardware reaccionando"</strong>.</p>
-                        </div>
-
-                        <div class="info-card">
-                            <span class="card-icon">💭</span>
-                            <h3>El Sentimiento (La Letra)</h3>
-                            <p>Transmite ambición, perseverancia y ganas de progresar. Al comprender el mensaje sobre el sacrificio que hay detrás del éxito, el oyente lo relaciona con sus propias metas. Este proceso representa el <strong>"software procesando el dato"</strong>.</p>
-                        </div>
-                    </div>
-
-                    <div class="highlight-box">
-                        <h3>✨ Persistencia del Mensaje</h3>
-                        <p>Es de alta persistencia. La combinación de un ritmo enérgico con una letra reflexiva hace que el mensaje no sea pasajero; se queda en la mente del oyente, impulsándolo a pensar en su propio futuro.</p>
-                    </div>
-
-                    <button class="back-btn" onclick="navigateToIntro()">← Volver al Inicio</button>
+                <div class="scroll-indicator" onclick="document.getElementById('analysis').scrollIntoView({behavior: 'smooth'})">
+                    Ver Análisis Musical ↓
                 </div>
             `;
 
-            document.body.appendChild(viewIntro);
-            document.body.appendChild(viewAnalysis);
+            // --- PARTE 2: ANÁLISIS MUSICAL ---
+            const analysisSection = document.createElement('div');
+            analysisSection.id = 'analysis';
+            analysisSection.className = 'analysis-section';
+            
+            analysisSection.innerHTML = `
+                <div class="analysis-header">
+                    <h2>Análisis Musical: Emoción vs. Sentimiento</h2>
+                    <span class="song-tag">🎵 Día de Cobro – Myke Towers</span>
+                </div>
+
+                <div class="glass-panel intro-text">
+                    La música es una forma de expresión capaz de influir profundamente en nosotros. En este análisis, se explora la diferencia entre la emoción (reacción inmediata al ritmo) y el sentimiento (comprensión reflexiva de la letra) utilizando el tema <strong>Día de Cobro</strong>, una canción de trap latino enfocada en el esfuerzo y la superación personal.
+                </div>
+
+                <div class="cards-grid">
+                    <div class="glass-panel info-card">
+                        <span class="card-icon">⚡</span>
+                        <h3>La Emoción (El Ritmo)</h3>
+                        <p>Produce energía, adrenalina y motivación automática. La base intensa y acelerada hace que el cuerpo reaccione de inmediato, incluso antes de escuchar la letra. Es lo que podemos llamar el <strong>"hardware reaccionando"</strong>.</p>
+                    </div>
+
+                    <div class="glass-panel info-card">
+                        <span class="card-icon">💭</span>
+                        <h3>El Sentimiento (La Letra)</h3>
+                        <p>Transmite ambición, perseverancia y ganas de progresar. Al comprender el mensaje sobre el sacrificio que hay detrás del éxito, el oyente lo relaciona con sus propias metas. Este proceso representa el <strong>"software procesando el dato"</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel highlight-box">
+                    <h3>✨ Persistencia del Mensaje</h3>
+                    <p>Es de alta persistencia. La combinación de un ritmo enérgico con una letra reflexiva hace que el mensaje no sea pasajero; se queda en la mente del oyente, impulsándolo a pensar en su propio futuro.</p>
+                </div>
+            `;
+
+            // Unir todo
+            mainWrapper.appendChild(introSection);
+            mainWrapper.appendChild(analysisSection);
+            document.body.appendChild(mainWrapper);
 
             const footer = document.createElement('footer');
             footer.innerText = "© 2026 Portafolio Académico | Francisco & Karen";
             document.body.appendChild(footer);
 
-            // Iniciar animaciones de texto
+            // Iniciar animaciones
             setTimeout(() => {
                 animateText(document.getElementById('name1'), 0.2);
                 animateText(document.getElementById('name2'), 1.8);
             }, 100);
+
+            // Listener para el scroll
+            window.addEventListener('scroll', handleScroll);
         }
 
-        // INICIAR APLICACIÓN
         document.addEventListener('DOMContentLoaded', () => {
             injectStyles();
             renderApp();
